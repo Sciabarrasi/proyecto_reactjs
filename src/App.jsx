@@ -1,11 +1,13 @@
 import './App.css'
-import Navbar from './components/header'
+import Header from './components/header'
+import ItemListContainer from './components/main/ItemListContainer'
 
 function App() {
 
   return (
       <div>
-        <Navbar />
+        <Header />
+        <ItemListContainer greeting="Compra realizada"/>
       </div>
   )
 }
