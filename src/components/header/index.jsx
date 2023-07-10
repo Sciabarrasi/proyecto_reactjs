@@ -1,6 +1,5 @@
 import React from "react";
-import ItemListContainer from "../main/ItemListContainer";
-import Carrito from "../../assets/carrito.png"
+import Navbar from "./navigation-bar/navbar";
 import './styles.css';
 
 
@@ -14,29 +13,6 @@ const Header = () => {
             </label>
             <Navbar />
         </header>
-    )
-}
-
-const Navbar = () => {
-    return(
-        <nav className="nav">
-                <ul className="menu">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Products</a></li>
-                    <li><a href="#">Categories</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-                <CartWidget />
-            </nav>
-    )
-}
-
-const CartWidget = () => {
-    return(
-        <div className="cartWidget">
-            <span className="cartNotification">5</span>
-            <img className="CartIcon" src={Carrito} alt="Carrito de Compras" />
-        </div>
     )
 }
 
