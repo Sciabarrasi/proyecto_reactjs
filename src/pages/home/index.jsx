@@ -4,6 +4,7 @@ import Input from '../../components/input/inputIndex';
 import Card from '../../components/products/card/productsIndex';
 import Details from '../../components/products/details/details';
 import Loader from '../../components/loader/loader';
+import Slider from '../../components/slider';
 import { useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import { API_URLS } from '../../constants';
@@ -17,7 +18,8 @@ function Home() {
   const [productDetails, setProductsDetail] = useState(null);
   const [productFiltered, setProductFiltered] = useState([]);
 
-  const { data: products, loading, error } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
+  const { data: products, loading: loadingProducts, error: errorProducts } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
+  const {data: categories, loading: loadingCategories, error: errorCategories} = useFetch(API_URLS.CATEGORIES.url, API_URLS.CATEGORIES.config);
 
   const filterBySearch = (query) =>{
     let updateProductList = [... products];
@@ -51,13 +53,27 @@ function Home() {
   return (
       <div>
           <div className='contentContainer'>
+            <div className='categoriesContainer'>
+              {loadingCategories && <Loader />}
+              {errorCategories && <h2>{errorCategories}</h2>}
+              <Slider >
+              {
+                categories.map((category) => (
+                  <div key={category.id} className='categoryContainer'>
+                    <p className='categoryName'>{category.name}</p>
+                  </div>
+                ))
+              }
+              </Slider>
+            </div>
+
             <div className='inputContainer'>
                 <Input placeholder="Busca un producto" id='task' required={true} name="Buscador" onchange={onChange} onFocus={onFocus} onBlur={onBlur} active={active} className={inputClass} />
             </div>
             <h2 className='headerTittleCard'>Productos</h2>
             <div className='cardContainer'>
-              {loading && <Loader />}
-              {error && <h3>{error}</h3>}
+              {loadingProducts && <Loader />}
+              {errorProducts && <h3>{errorProducts}</h3>}
               {search.length > 0 && productFiltered === 0 && <h2>Producto no encontrado</h2>}
                 {
                   search.length > 0 ? (
@@ -72,7 +88,6 @@ function Home() {
                 }
             </div>
           </div>
-          )
         </div>
   )
 }

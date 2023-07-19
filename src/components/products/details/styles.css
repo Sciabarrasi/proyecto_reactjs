@@ -12,6 +12,10 @@
     transition: all 0.3s ease-in-out;
 }
 
+.cardDetailImageContainer{
+    padding: 0rem 1.5rem;
+}
+
 .cardDetailImage{
     width: 400px;
     height: 400px;
@@ -40,9 +44,9 @@
 
 .cardDetailDecription{
     font-size: 1rem;
+    padding: 0.3rem 0;
     color: #5156A4;
     font-weight: bold;
-    text-align: center;
 }
 
 .cardDetailPrice{
@@ -71,21 +75,17 @@
     border-radius: 0.2rem;
 }
 
-.headerDetailContainer{
-    display: flex;
-    flex-direction: row;
-    padding: 0.54rem;
+.cardDetailActions button:hover{
+    background-color: #3f428e;
 }
-.headerDetailContainer .backButton{
-    border: none;
-    background-color: transparent;
-    font-size: 1rem;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
-}
-.headerDetailContainer .backButton:hover{
-    border-bottom: 1px solid #5156A4;
-    scale: 1.02;
+
+@media (max-width: 420px){
+    .cardDetail{
+        flex-direction: column;
+        height: max-content;
+    }
+    .cardDetailImage{
+        width: 320px;
+        height: 200px;
+    }
 }
