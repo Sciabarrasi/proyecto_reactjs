@@ -1,18 +1,19 @@
-.slider{
+.slider {
     overflow: hidden;
     position: relative;
 }
-
-.sliderContent{
+.sliderContent {
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    cursor: pointer;
+    padding: 0 3rem;
 }
 
 .nextButton,
-.previousButton{
+.previousButton {
     border: none;
     width: 2rem;
     height: 2rem;
@@ -23,14 +24,18 @@
     align-items: center;
     background-color: #000000;
     border-radius: 0.5rem;
+    color: #FFFFFF;
+    font-size: 1.5rem;
 }
 
-.nextButton{
+.nextButton {
     right: 0;
 }
 
-.previousButton span,
-.nextButton span{
-    font-size: 1.5rem;
+.nextButton:active,
+.previousButton:active,
+.nextButton:hover,
+.previousButton:hover {
     background-color: #FFFFFF;
+    color: #000000;
 }
