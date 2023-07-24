@@ -42,6 +42,17 @@ ul{
 .categoryContainer{
     min-width: 200px;
     height: fit-content;
-    background-color: #5156A4;
+    background-color: #a386dd;
     padding: 1rem;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    color: #000000;
+}
+.categoryContainer:hover{
+    background-color: #8669c0;
+    color: #FFFFFF;
+}
+
+.categoryName{
+    font-size: 1rem;
 }
