@@ -20,7 +20,7 @@ function Home() {
   const [cart, setCart] = useState([]);
 
   const { data: products, loading: loadingProducts, error: errorProducts } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
-  const {data: categories, loading: loadingCategories, error: errorCategories} = useFetch(API_URLS.CATEGORIES.url, API_URLS.CATEGORIES.config);
+  const { data: categories, loading: loadingCategories, error: errorCategories} = useFetch(API_URLS.CATEGORIES.url, API_URLS.CATEGORIES.config);
 
   {/*
   const filterBySearch = (query) =>{
@@ -53,6 +53,11 @@ function Home() {
     navigate(`/products/${id}`);
   }
 
+  const onShowCategory = (id) =>{
+    navigate(`/category/${id}`);
+  }
+
+
   const onFilter =(name) =>{
     setIsFiltered(true);
     const productsByCategory = products.filter((product) => product.category === name);
@@ -80,7 +85,6 @@ function Home() {
       });
     }
   }
-  console.log({cart});
 
   return (
       <div>
@@ -101,15 +105,15 @@ function Home() {
                 }
             </div>
             <div className='categoriesContainer'>
-              {loadingCategories && <Loader />}
-              {errorCategories && <h2>{errorCategories}</h2>}
+              {loadingCategories ? <Loader /> : null}
+              {errorCategories ? <h2>{errorCategories}</h2> : null}
               <Slider >
                 <button onClick={() => setIsFiltered(false)} type='button' className='categoryContainer'>
                   <p className='categoryName'>Mostrar Todos</p>
-                  </button>
+                </button>
               {
                 categories.map((category) => (
-                  <button key={category.id} onClick={() => onFilter(category.name)} type='button' className='categoryContainer'>
+                  <button key={category.id} onClick={onShowCategory(category.name)} type='button' className='categoryContainer'>
                     <p className='categoryName'>{category.name}</p>
                   </button>
                 ))
@@ -129,16 +133,16 @@ function Home() {
                 {
                   isFiltered ? (
                     productFiltered.map((product) =>{
-                      <Card onAddToCart={onAddToCart} key={product.id}{ ... product} onShowDetails={onShowDetails}/>
+                      <Card onAddToCart={onAddToCart} key={product.id} { ... product} onShowDetails={onShowDetails}/>
                     })
                   ) : (
                   products.map((product) => (
-                    <Card onAddToCart={onAddToCart} key={product.id}{ ... product} onShowDetails={onShowDetails}/>
+                    <Card onAddToCart={onAddToCart} key={product.id} { ... product} onShowDetails={onShowDetails}/>
                   ))
                   )
                 }
                 {
-                  isFiltered && productFiltered.length === 0 && <h2>No hay Productos!</h2>
+                  isFiltered && productFiltered.length === 0 ? <h2>No hay Productos!</h2> : null
                 }
             </div>
           </div>

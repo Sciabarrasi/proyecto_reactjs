@@ -22,21 +22,11 @@ const Slider = ({ children }) => {
         event.preventDefault();
     }
 
-    const onHandleTouchMove = (event) =>{
-        event.preventDefault();
-        const x = event.touches[0].clientX - sliderContentRef.current.offsetLeft;
-        const walk = (x - startX.current) * 3;
-        sliderContentRef.current.scrollLeft = scroll.current - walk;
-    }
-
     return(
         <div className="slider">
             <button type='button' onClick={onHandleClickPrevious} className='previousButton'><span>&lt;</span></button>
             <button onClick={onHandleClickNext} type='button' className='nextButton'><span>&gt;</span></button>
-            <div ref={sliderContentRef} className='sliderContent'
-            onTouchStart={onHandleTouchStart}
-            onTouchEnd={onHandleTouchEnd}
-            onHandleTouchMove={onHandleTouchMove}>
+            <div ref={sliderContentRef} className='sliderContent' onTouchStart={onHandleTouchStart} onTouchEnd={onHandleTouchEnd}>
                 {children}
             </div>
         </div>
