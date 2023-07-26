@@ -22,7 +22,7 @@ function ProductDetail() {
         <div className="loaderContainer">
             <Loader />
         </div>)}
-        {error && <p>Algo salió mal..</p>}\
+        {error && <p>Algo salió mal..</p>}
 
         <Details {... data} />
         </>
