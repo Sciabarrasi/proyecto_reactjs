@@ -113,7 +113,7 @@ function Home() {
                 </button>
               {
                 categories.map((category) => (
-                  <button key={category.id} onClick={onShowCategory(category.name)} type='button' className='categoryContainer'>
+                  <button key={category.id} onClick={() => navigate(`/category/${category.name}`) } type='button' className='categoryContainer'>
                     <p className='categoryName'>{category.name}</p>
                   </button>
                 ))
