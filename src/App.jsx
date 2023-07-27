@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/header';
 import Home from './pages/home';
 import ProductDetail from './pages/product-detail';
-import Card from './components/products/card/productsIndex';
+import ItemListContainer from './components/main/ItemListContainer';
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/products/:productId' element={<ProductDetail />} />
-          <Route path='/category/:categoryid' element={<Card />} />
+          <Route path='/category/:categoryId' element={<ItemListContainer />} />
         </Routes>
       </div>
     )

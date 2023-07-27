@@ -4,7 +4,6 @@ import './styles.css';
 const Card = ({id, image, name, category, description, price, stock, onAddToCart, onShowDetails}) =>{
     const navigate = useNavigate();
 
-    const historyBack = window.history;
     return(
         <>
         <div className='card'>

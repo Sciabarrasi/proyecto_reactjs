@@ -54,9 +54,8 @@ function Home() {
   }
 
   const onShowCategory = (id) =>{
-    navigate(`/category/${id}`);
+    navigate(`/category/${id}`)
   }
-
 
   const onFilter =(name) =>{
     setIsFiltered(true);
@@ -113,7 +112,7 @@ function Home() {
                 </button>
               {
                 categories.map((category) => (
-                  <button key={category.id} onClick={() => navigate(`/category/${category.name}`) } type='button' className='categoryContainer'>
+                  <button key={category.id} onClick={()=> onShowCategory(category.id)} type='button' className='categoryContainer'>
                     <p className='categoryName'>{category.name}</p>
                   </button>
                 ))
