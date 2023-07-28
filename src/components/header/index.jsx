@@ -6,7 +6,7 @@ import './styles.css';
 const Header = () => {
     return (
         <header className="header">
-            <a href="" className="logo">WebMarket</a>
+            <a href="/" className="logo">WebMarket</a>
             <input type="checkbox" className="side-menu" id="side-menu"/>
             <label className="hamb" for="side-menu">
                 <span className="hamb-line"></span>
