@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { API_URLS } from "../../constants";
+import { useFetch } from "../../hooks/useFetch";
+import Loader from "../loader/loader";
 import ItemList from "./ItemList";
+import Card from "../products/card/productsIndex";
 
-const ItemListContainer = ({greeting}) =>{
+const ItemListContainer = () =>{
     const [products, setProducts] = useState([]);
     const {categoryId} = useParams();
+    const urlProduct = `${API_URLS.PRODUCTS.url}`;
 
-    const getProductsByCategory = (categoryId) =>{
-        return new Promise((resolve) => {
-          setTimeout(() =>{
-            resolve(products.find(products => products.category === categoryId))
-          }, 500);
-        })
-    }
+    const { data, loading, error } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
 
-    useEffect(()=> {
-        const asyncFunc = categoryId ? getProductsByCategory : setProducts;
-
-        asyncFunc(categoryId)
-        .then(response =>{
-            setProducts(response)
-        })
-        .catch(error =>{
-            console.error(error)
-        })
-    }, [categoryId])
+    const filteredProducts = data.filter(product => product.category === categoryId);
+    console.log(filteredProducts);
 
     return(
-        <div>
-            <h1>{greeting}</h1>
-            <ItemList products={products}/>
-        </div>
+        <>
+            <div className='headerDetailContainer'>
+                {history.length > 2 ? (<button onClick={()=> navigate(-1)} className='backButton'> &#8592; Volver</button>) : null}
+                <h2 className='headerTittleCard'>Detalles del Producto</h2>
+            </div>
+            {
+            filteredProducts.map((product) => (
+                <Card key={product.id} { ... product}/>
+                ))
+            }
+        </>
     )
 }
 
