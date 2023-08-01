@@ -1,9 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
 const Card = ({id, image, name, category, description, price, stock, onAddToCart, onShowDetails}) =>{
-    const navigate = useNavigate();
-
     return(
         <>
         <div className='card'>
@@ -18,7 +15,7 @@ const Card = ({id, image, name, category, description, price, stock, onAddToCart
                 </div>
             </button>
             <div className='cardActions'>
-                <button onClick={onAddToCart} className='cardButton'>Agregar al carrito</button>
+                <button onClick={()=> onAddToCart(id)} className='cardButton'>Agregar al carrito</button>
             </div>
         </div>
         </>

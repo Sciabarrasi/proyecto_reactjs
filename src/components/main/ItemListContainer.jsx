@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { API_URLS } from "../../constants";
 import { useFetch } from "../../hooks/useFetch";
-import Loader from "../loader/loader";
-import ItemList from "./ItemList";
 import Card from "../products/card/productsIndex";
 
 const ItemListContainer = () =>{
-    const [products, setProducts] = useState([]);
     const {categoryId} = useParams();
-    const urlProduct = `${API_URLS.PRODUCTS.url}`;
-
+    const navigate = useNavigate();
+    const history = window.history;
     const { data, loading, error } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
 
     const filteredProducts = data.filter(product => product.category === categoryId);

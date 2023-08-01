@@ -66,9 +66,16 @@ ul{
     max-height: 0;
     transition: max-height .5s ease-in-out;
 }
+
+.menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .menu a{
     display: block;
-    padding: 25px;
+    padding: 1.3rem;
     color: #fff;
     transition: all 0.3s ease-in-out;
 }
@@ -93,22 +100,44 @@ ul{
     flex-direction: column;
     margin: 0px 20px;
 }
-.cartIcon{
-    font-size: 24px;
-    color: #0e0d0d;
-}
-.cartNotifacation{
-    background-color: #ff0000;
-    color: #fff;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 50%;
-    margin-left: 4px;
-}
-.CartIcon{
-    width: 40px;
+
+.menu-cart-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+    padding: 0.4rem 0;
 }
 
+.menu-cart-image{
+    width: 30px;
+    height: 30px;
+}
+.menu-cart-count-container{
+    width: 22px;
+    height: 22px;
+    background-color: #5156A4;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    top: 0.4rem;
+    right: 0.8rem;
+    transition: all 0.3s ease-in-out;
+}
+.menu-cart-count{
+    color: #fff;
+    font-size: 12px;
+}
+.menu-cart-count-container:hover{
+    background-color: red;
+}
+.menu-cart-container:hover {
+    cursor: pointer;
+}
 
 
 @media (min-width: 768px){

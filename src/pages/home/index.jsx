@@ -5,10 +5,11 @@ import Card from '../../components/products/card/productsIndex';
 import Details from '../../components/products/details/details';
 import Loader from '../../components/loader/loader';
 import Slider from '../../components/slider';
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import { API_URLS } from '../../constants';
 import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../../context/cart-context';
 
 function Home() {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ function Home() {
   const [isFiltered, setIsFiltered] = useState(false);
   const [productDetails, setProductsDetail] = useState(null);
   const [productFiltered, setProductFiltered] = useState([]);
-  const [cart, setCart] = useState([]);
+
+  const { setProducts, products: productsContext, onAddToCart, cart } = useContext(CartContext);
 
   const { data: products, loading: loadingProducts, error: errorProducts } = useFetch(API_URLS.PRODUCTS.url, API_URLS.PRODUCTS.config);
   const { data: categories, loading: loadingCategories, error: errorCategories} = useFetch(API_URLS.CATEGORIES.url, API_URLS.CATEGORIES.config);
@@ -49,6 +51,12 @@ function Home() {
   const inputClass = `container ${active ? 'active' : ''}`
   */}
 
+  useEffect(() =>{
+    if(products?.length > 0){
+      setProducts(products);
+    }
+  }, [products, setProducts])
+
   const onShowDetails = (id) =>{
     navigate(`/products/${id}`);
   }
@@ -63,46 +71,38 @@ function Home() {
     setProductFiltered(productsByCategory);
   }
 
-  const onAddToCart = (id) => {
-    const item = products.find((product) => product.id === id);
-    if(cart?.find((product) => product.id === id)?.quantity === Number(item.stock)) return;
-    if(cart?.length === 0){
-      setCart([{... item, quantity: 1}])
-    }
-    if(cart?.length > 0 && !cart?.find((product) => product.id === id)){
-      setCart([... cart, {... item, quantity: 1 }])
-    }
-    if(cart?.length > 0 && cart?.find((product) => product.id === id)){
-      setCart((currentCart) =>{
-        return currentCart.map((product) =>{
-          if(product.id === id){
-            return {... product, quantity: product.quantity + 1}
-          }else{
-            return product;
-          }
-        })
-      });
-    }
-  }
+  console.log({productsContext, cart})
 
   return (
       <div>
           <div className='contentContainer'>
-            <h2>Carrito</h2>
+            {/*<h2>Carrito</h2>
             <div className='cartContainer'>
                 {cart.length === 0 && <h3>El carrito está vacío</h3>}
                 {
                   cart?.length > 0 && cart.map((product) =>(
                     <div key={product.id} className='cartItem'>
-                      <img className='cardImage' src={product.image} alt={product.name} />
-                      <p className='cartProductName'>{product.name}</p>
-                      <p className='cartProductQuantity'>{product.quantity}</p>
-                      <p className='cartProductPrice'>{product.price}</p>
-                      <p className='cartProductStock'>{product.stock}</p>
+                      <div className='cardImageContainer'>
+                        <img className='cardImage' src={product.image} alt={product.name} />
+                      </div>
+                      <div className='cartContentContainer'>
+                        <p className='cartProductName'>{product.name}</p>
+                        <p className='cartProductPrice'>USD {product.price}</p>
+                        <p className='cartProductQuantity'>Hay: {product.quantity}</p>
+                        <p className='cartProductStock'>Quedan: {product.stock}</p>
+                        <div className='cartActions'>
+                          <button onClick={()=> onAddToCart(product.id)} className='cartButtonAdd'>+</button>
+                          <button onClick={()=> onDecreaseCartItem(product.id)} className='cartButtonDecrease'>-</button>
+                          <button onClick={()=> onRemoveCartItem(product.id)} className='cartButtonRemove'>Remover</button>
+                        </div>
+                      </div>
                     </div>
                   ))
                 }
-            </div>
+                {
+                  cart?.length > 0 && <p className='cartTotal'>Total: USD {sumTotalCart}</p>
+                }
+              </div>*/}
             <div className='categoriesContainer'>
               {loadingCategories ? <Loader /> : null}
               {errorCategories ? <h2>{errorCategories}</h2> : null}
@@ -132,11 +132,11 @@ function Home() {
                 {
                   isFiltered ? (
                     productFiltered.map((product) =>{
-                      <Card onAddToCart={onAddToCart} key={product.id} { ... product} onShowDetails={onShowDetails}/>
+                      <Card key={product.id} { ... product} onShowDetails={onShowDetails} onAddToCart={onAddToCart}/>
                     })
                   ) : (
                   products.map((product) => (
-                    <Card onAddToCart={onAddToCart} key={product.id} { ... product} onShowDetails={onShowDetails}/>
+                    <Card key={product.id} { ... product} onShowDetails={onShowDetails} onAddToCart={onAddToCart}/>
                   ))
                   )
                 }
