@@ -8,7 +8,7 @@ const initialState = {
     getItemQuantity: () => {},
     onDecreaseItem: () => {},
     onAddToCart: () => {},
-    onRemoveCartItem: () => {},
+    onRemoveItem: () => {},
     total: 0,
 }
 
@@ -56,7 +56,7 @@ export const CartProvider = ({ children }) => {
     }
     }
 
-    const onRemoveCartItem = (id) => {
+    const onRemoveItem = (id) => {
     setCart((currentCart) =>{
         return currentCart.filter((product) => product.id !== id)
     })
@@ -68,8 +68,12 @@ export const CartProvider = ({ children }) => {
         return cart.find((product) => product.id === id)?.quantity || 0;
     }
 
+    const getTotalItemQuantity = () =>{
+        return cart.reduce((acc, product) => acc + product.quantity, 0)
+    }
+
     return(
-        <CartContext.Provider value={{ cart, setCart, onDecreaseItem, onAddToCart, onRemoveCartItem, total, products, categories, setCategories, setProducts, getItemQuantity}}>
+        <CartContext.Provider value={{ cart, setCart, onDecreaseItem, onAddToCart, onRemoveItem, total, products, categories, setCategories, setProducts, getItemQuantity, getTotalItemQuantity}}>
             {children}
         </CartContext.Provider>
     )

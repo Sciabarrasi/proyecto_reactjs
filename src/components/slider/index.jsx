@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import './styles.css'
 
-const Slider = ({ children }) => {
+const Slider = memo(({ children }) => {
     const sliderContentRef = useRef(null);
     const startX = useRef(null);
     const scrollLeft = useRef(null);
@@ -31,6 +31,6 @@ const Slider = ({ children }) => {
             </div>
         </div>
     )
-}
+})
 
 export default Slider;

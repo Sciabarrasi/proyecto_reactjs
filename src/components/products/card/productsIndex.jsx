@@ -1,4 +1,5 @@
 import './styles.css';
+import {memo} from 'react';
 
 const Card = ({id, image, name, category, description, price, stock, onAddToCart, onShowDetails}) =>{
     return(
@@ -22,4 +23,4 @@ const Card = ({id, image, name, category, description, price, stock, onAddToCart
     )
 }
 
-export default Card;
+export default memo(Card);

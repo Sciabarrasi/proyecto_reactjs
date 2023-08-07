@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import "./styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URLS } from "../../constants";
 import { useFetch } from "../../hooks/useFetch";
 import Card from "../products/card/productsIndex";
+import Loader from "../loader/loader";
 
 const ItemListContainer = () =>{
     const {categoryId} = useParams();
@@ -19,6 +21,13 @@ const ItemListContainer = () =>{
                 {history.length > 2 ? (<button onClick={()=> navigate(-1)} className='backButton'> &#8592; Volver</button>) : null}
                 <h2 className='headerTittleCard'>Detalles del Producto</h2>
             </div>
+            {loading && (
+                <div className="loaderContainer">
+                    <Loader />
+                </div>
+            )}
+            {error && <p>Algo salio mal..</p>}
+
             {
             filteredProducts.map((product) => (
                 <Card key={product.id} { ... product}/>

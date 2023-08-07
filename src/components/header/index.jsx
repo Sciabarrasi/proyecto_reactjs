@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Carrito from "../../assets/carrito.png"
 import './styles.css';
 import { CartContext } from "../../context/cart-context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
 
     return (
         <header className="header">
-            <a href="/" className="logo">WebMarket</a>
+            <Link to="/" className="logo">WebMarket</Link>
             <input type="checkbox" className="side-menu" id="side-menu"/>
             <label className="hamb" htmlFor="side-menu">
                 <span className="hamb-line"></span>
