@@ -1,10 +1,12 @@
 import { useReducer } from "react"
+import { validateInput } from "../utils/functions/formValidation";
 
 const INPUT_ACTIONS = {
     INPUT_CHANGE: 'INPUT_CHANGE',
     CLEAR_INPUTS: 'CLEAR_INPUTS',
     SET_DATA: 'SET_DATA',
-    INPUT_FOCUS: 'INPUT_FOCUS'
+    INPUT_FOCUS: 'INPUT_FOCUS',
+    INPUT_BLUR: 'INPUT_BLUR',
 }
 
 const formReducer = (state, action) => {
@@ -22,12 +24,19 @@ const formReducer = (state, action) => {
                 isFromValid,
             }
             case INPUT_ACTIONS.INPUT_FOCUS:
-                const {name: inputName, active: inputActive} = action.data;
                 return {
                     ... state,
-                    [inputName]:{
-                        ... state[inputName],
-                        active: inputActive,
+                    [action.data.name]:{
+                        ... state[action.data.name],
+                        active: true,
+                    }
+                }
+            case INPUT_ACTIONS.INPUT_BLUR:
+                return {
+                    ... state,
+                    [action.data.name]: {
+                        ... state[action.data.name],
+                        active: false,
                     }
                 }
             case INPUT_ACTIONS.CLEAR_INPUTS:
@@ -41,11 +50,29 @@ export const useForm = (initialState) =>{
     const [formState, dispatchFormState] = useReducer(formReducer, initialState)
 
     const inputHandler = ({name, value}) =>{
+        const {error, hasError} = validateInput({type: name, value})
+        let isFormValid = true;
+
+        for(const key in formState){
+            const item = formState[key];
+            if(key !== name && hasError){
+                isFormValid = false;
+                break;
+            }else if(key !== name && item.hasError){
+                isFormValid = false;
+                break;
+            }
+        }
+
         dispatchFormState({
             type: INPUT_ACTIONS.INPUT_CHANGE,
             data:{
                 name,
                 value,
+                error,
+                hasError,
+                isFormValid,
+                active: true,
             }
         })
     }
@@ -57,15 +84,23 @@ export const useForm = (initialState) =>{
         })
     }
 
-    const inputFocus= ({ name, active}) =>{
+    const inputFocus= ({ name }) =>{
         dispatchFormState({
             type: INPUT_ACTIONS.INPUT_FOCUS,
             data: {
                 name,
-                active,
             }
         })
     }
 
-    return [formState, inputHandler, clearInputs, inputFocus]
+    const inputBlur = ({name}) =>{
+        dispatchFormState({
+            type: INPUT_ACTIONS.INPUT_BLUR,
+            data:{
+                name,
+            }
+        })
+    }
+
+    return [formState, inputHandler, clearInputs, inputFocus, inputBlur]
 };
