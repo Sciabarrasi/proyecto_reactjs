@@ -1,6 +1,10 @@
 import Input from "../../components/input/inputIndex"
 import "./styles.css"
 import { useForm } from "../../hooks/useForm";
+import { CartContext } from "../../context/cart-context";
+import { firebaseServices } from "../../services/firebase";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const initialState = {
     name : { value: '',error: '', hasError: true, active: false, name: 'nombre'},
@@ -11,8 +15,19 @@ const initialState = {
     isFormValid: false,
 }
 
+function useQuery(){
+    const { search } = useLocation();
+
+    return useMemo(() => new URLSearchParams(search),[search]);
+}
+
+
 function Checkout() {
     const [formState, inputHandler, clearInputs, inputFocus, inputBlur] = useForm(initialState);
+    const {cart, total, setCart} = useContext(CartContext);
+    const [orderCreated, setOrderCreated] = useState(null);
+    const { state } = useLocation();
+    let query = useQuery();
 
     const onChange = (event) => {
         const {name, value} = event.target
@@ -27,10 +42,64 @@ function Checkout() {
         inputBlur({name});
     }
 
-    const onSubmit = (event) =>{
-        event.preventDefault();
-        console.log('formState', formState);
+    const onHandlerOrder = async () =>{
+        const newOrder = {
+            buyer: {
+                name: formState.name.value,
+                surname: formState.surname.value,
+                address: formState.address.value,
+                country: formState.country.value,
+                email: formState.email.value,
+            },
+            createAt: new Date(),
+            items: cart,
+            payment: {
+                currency: 'USD',
+                method: 'CASH',
+                type: 'CASH',
+            },
+            seller: {
+                id: 1,
+                name: 'Predito',
+                phoen: '123103021',
+                email: 'pedrito@gmail.com',
+            },
+            shipping:{
+                deliverDate: new Date() + 7,
+                trackingNumber: '123151234asdad123',
+                type: 'DELIVERY',
+            },
+            total: total
+        }
+
+        const orderId = await firebaseServices.createOrder(newOrder);
+        await firebaseServices.updateCart(state?.cartId);
+        return { orderId }
     }
+
+    const onSubmit = async (event) =>{
+        event.preventDefault();
+        const { orderId } = await onHandlerOrder();
+        setOrderCreated(orderId);
+    }
+
+    useEffect(() =>{
+        const cartId = query.get("cartId");
+
+        if(query.get("cartId")) {
+            const getCart = async () => {
+                const cart = await firebaseServices.getCartById(cartId)
+                return cart
+            }
+            getCart()
+                .then((cart) =>{
+                    setCart(cart.items)
+                })
+                .catch((error) =>{
+                    console.log({error})
+                })
+        }
+    },[query])
 
     return(
         <div className="checkoutContainer">
@@ -113,7 +182,7 @@ function Checkout() {
                         maxLength={40}/>
                     </div>
                 </div>
-                <button disabled={!formState.isFormValid} type="submit" className='buttonCheckout'>Comprar</button>
+                <button type="submit" className='buttonCheckout'>Comprar</button>
             </form>
         </div>
     )
