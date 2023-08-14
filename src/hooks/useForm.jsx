@@ -49,7 +49,7 @@ const formReducer = (state, action) => {
 export const useForm = (initialState) =>{
     const [formState, dispatchFormState] = useReducer(formReducer, initialState)
 
-    const inputHandler = ({name, value}) =>{
+    const inputHandler = ({name, value, dispatch = dispatchFormState}) =>{
         const {error, hasError} = validateInput({type: name, value})
         let isFormValid = true;
 
@@ -64,7 +64,7 @@ export const useForm = (initialState) =>{
             }
         }
 
-        dispatchFormState({
+        dispatch({
             type: INPUT_ACTIONS.INPUT_CHANGE,
             data:{
                 name,
@@ -77,15 +77,15 @@ export const useForm = (initialState) =>{
         })
     }
 
-    const clearInputs = ({formState}) =>{
-        dispatchFormState({
+    const clearInputs = ({formState, dispatch = dispatchFormState}) =>{
+        dispatch({
             type: INPUT_ACTIONS.CLEAR_INPUTS,
             data: formState,
         })
     }
 
-    const inputFocus= ({ name }) =>{
-        dispatchFormState({
+    const inputFocus= ({ name, dispatch = dispatchFormState }) =>{
+        dispatch({
             type: INPUT_ACTIONS.INPUT_FOCUS,
             data: {
                 name,
@@ -93,8 +93,8 @@ export const useForm = (initialState) =>{
         })
     }
 
-    const inputBlur = ({name}) =>{
-        dispatchFormState({
+    const inputBlur = ({name, dispatch = dispatchFormState}) =>{
+        dispatch({
             type: INPUT_ACTIONS.INPUT_BLUR,
             data:{
                 name,
@@ -102,5 +102,5 @@ export const useForm = (initialState) =>{
         })
     }
 
-    return [formState, inputHandler, clearInputs, inputFocus, inputBlur]
+    return [formState, inputHandler, inputFocus, inputBlur, clearInputs]
 };
